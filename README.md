@@ -34,7 +34,36 @@ An aircraft delay rarely affects only one flight. The same aircraft may be sched
 
 In our synthetic three-flight rotation, an initial **60-minute** arrival delay propagates to **45 minutes** on the second flight and **30 minutes** on the third. The example assumes **45 minutes** of scheduled ground time and a **30-minute** minimum turnaround between flights. This deterministic calculation is implemented and tested; it is not a live airline prediction.
 
-## Current implementation — V1.1
+## Current implementation — V1.2 (feature branch)
+
+**Implemented and validated locally; proposed for merge into `main`.** V1.2 builds on the completed V1.1 delay propagation engine.
+
+- **Synthetic network:** nine scheduled flights, three aircraft, and four Texas airports (DAL, HOU, AUS, SAT), using fixed UTC-aware timestamps.
+- **Multi-aircraft simulation:** groups flights by aircraft, sorts each rotation chronologically, and reuses V1.1 propagation independently for each aircraft.
+- **Scenario parameters:** configurable initial delays for each of the three aircraft; missing delays default to zero in the simulation API.
+- **Reproducible CSV exports:** `flights.csv` contains schedules and aircraft assignments; `delays.csv` contains calculated flight-level delays.
+- **CLI:** runs the full network → simulation → export workflow with one command and supports alternative output directories and delays.
+- **Verification:** 28 passing tests and clean Ruff lint/format checks, reported from local validation.
+
+### Generate a scenario
+
+```bash
+uv run python -m airline_operations_intelligence.scenarios.run
+```
+
+Default outputs: `data/generated/flights.csv` and `data/generated/delays.csv`.
+
+```bash
+uv run python -m airline_operations_intelligence.scenarios.run \
+  --output-dir data/scenario-severe \
+  --delay-a 120 --delay-b 45 --delay-c 180
+```
+
+Generated scenario directories are excluded from Git; rerun the CLI to recreate the data. All datasets are **synthetic training data**, not actual airline operational records. They are **candidate inputs for future Databricks ingestion**, not evidence of a deployed lakehouse.
+
+**V1.2 limitations:** Rotations are simulated independently; the engine does not yet model cross-aircraft dependencies, crew and gate constraints, aircraft swaps, live data, recovery optimization, or actual operational performance.
+
+## Foundation — V1.1
 
 **Completed and merged into `main`.** The V1.1 Python implementation, tests, and documentation are available in this repository.
 
@@ -105,9 +134,19 @@ src/airline_operations_intelligence/
   domain/
     models.py
     rotation.py
+  scenarios/
+    network.py
+    simulation.py
+    export.py
+    run.py
 tests/
   test_models.py
   test_rotation.py
+  test_network.py
+  test_simulation.py
+  test_export.py
+  test_cli.py
+data/                     # generated scenarios are Git-ignored
 pyproject.toml
 uv.lock
 ROADMAP.md
