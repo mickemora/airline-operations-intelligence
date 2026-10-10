@@ -4,8 +4,8 @@ This roadmap describes **planned milestones**, not deployed capabilities. Status
 
 | Milestone | Focus | Status | Demonstrable deliverable |
 | --- | --- | --- | --- |
-| V1.1 | Airline domain model and delay propagation | Local implementation committed; publication pending | Python domain classes, deterministic propagation, eight reported passing tests |
-| V1.2 | Operational realism and synthetic scenarios | Planned | Minimum turnaround variations, edge-case validation, multi-aircraft fixtures, reproducible CLI |
+| V1.1 | Airline domain model and delay propagation | Completed and merged into main | Python domain classes, deterministic propagation, eight reported passing tests |
+| V1.2 | Operational realism and synthetic scenarios | Feature branch published; review/merge pending | Nine-flight synthetic network, multi-aircraft simulation, CSV exports, reproducible CLI, 28 reported passing tests |
 | V2 | Databricks Lakehouse | Planned | Bronze/Silver/Gold Delta pipelines and synthetic data quality checks |
 | V3 | Unity Catalog | Planned | Catalog design, permissions, classifications, and lineage evidence |
 | V4 | Amazon Neptune | Planned | Graph schema, graph ingestion, and multi-hop dependency queries |
@@ -22,8 +22,20 @@ This roadmap describes **planned milestones**, not deployed capabilities. Status
 - [x] Enforce aircraft/airport continuity and reject overlapping schedules
 - [x] Support configurable synthetic minimum turnaround
 - [x] Report eight passing unit tests and clean lint/format checks
-- [ ] Publish implementation to remote feature branch
-- [ ] Review and merge pull request into `main`
+- [x] Publish implementation to remote feature branch
+- [x] Review and merge pull request into `main`
+
+## V1.2 — Acceptance criteria
+
+- [x] Generate deterministic synthetic flight schedules for three aircraft and four airports
+- [x] Validate aircraft rotations, connected airports, positive durations, and unique flight identifiers
+- [x] Simulate per-aircraft delay propagation using the V1.1 engine
+- [x] Export reproducible flight and delay CSV files
+- [x] Provide a configurable command-line scenario runner
+- [x] Exclude generated outputs from version control
+- [x] Report 28 passing tests and clean Ruff checks
+- [x] Publish implementation to remote feature branch
+- [ ] Review and merge V1.2 pull request into `main`
 
 ## Architectural guardrails
 
