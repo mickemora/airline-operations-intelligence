@@ -10,9 +10,33 @@ An independent, hands-on enterprise AI engineering project exploring how flight 
 
 An aircraft arriving late can delay subsequent flights in its rotation. Understanding the downstream impact requires reliable flight schedules, consistent aircraft assignments, airport continuity, and realistic turnaround constraints. Future versions will examine how this dependency analysis can inform operations recovery decisions.
 
+## Business case and proposed solution
+
+![Airline Operations Intelligence — business case, solution architecture, delay propagation example, and development roadmap](docs/images/Airline%20Operations%20Intelligence%20Roadmap.png)
+
+*Executive overview of the business challenge, proposed enterprise architecture, expected benefits, and phased delivery roadmap. The diagram illustrates the target solution; the Databricks, Neptune, and Bedrock integrations are not yet implemented.*
+
+### Why this matters
+
+An aircraft delay rarely affects only one flight. The same aircraft may be scheduled for several legs, while aircraft availability, airports, gates, crews, and weather create interconnected operational dependencies. Without a unified view of those relationships, operators may struggle to understand downstream effects quickly and evaluate recovery options.
+
+### Proposed approach
+
+1. **Model and simulate operations:** represent aircraft, airports, flights, rotations, and turnaround constraints; calculate how disruptions propagate.
+2. **Prepare and govern data:** use **Databricks / Delta Lake** for curated operational datasets and **Unity Catalog** for governance within the Databricks environment.
+3. **Analyze dependencies:** use **Amazon Neptune** to represent and traverse relationships among operational entities.
+4. **Investigate with AI:** use **Amazon Bedrock / AgentCore** for bounded, evidence-grounded analysis of disruption scenarios.
+5. **Support human decisions:** present explainable impacts, options, and trade-offs for operations teams to evaluate.
+
+**Intended business outcomes:** improved disruption visibility, faster and better-informed recovery decisions, greater operational resilience, and opportunities to reduce customer impact and operational costs. These are goals, not validated performance claims.
+
+### Working example — V1.1
+
+In our synthetic three-flight rotation, an initial **60-minute** arrival delay propagates to **45 minutes** on the second flight and **30 minutes** on the third. The example assumes **45 minutes** of scheduled ground time and a **30-minute** minimum turnaround between flights. This deterministic calculation is implemented and tested; it is not a live airline prediction.
+
 ## Current implementation — V1.1
 
-**Implemented locally and committed by the project author; remote feature-branch publication pending.**
+**Completed and merged into `main`.** The V1.1 Python implementation, tests, and documentation are available in this repository.
 
 - Immutable Python domain models for airports, aircraft, and scheduled flights
 - Flight duration calculation
@@ -36,8 +60,6 @@ uv run pytest -v
 uv run ruff check .
 uv run ruff format --check .
 ```
-
-> Until V1.1 is merged into `main`, check out `feature/v1.1-airline-domain-model` after cloning (once pushed).
 
 ## Target reference architecture (planned, not deployed)
 
